@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="demo">
 <head lang="en">
     <meta charset="UTF-8">
     <title>Example</title>
+    <link href="bootstrap.css" rel="stylesheet" />
+    <link href="bootstrap-theme.css" rel="stylesheet" />
     <script src="angular.js"></script>
-    <script>
-        console.log("Hello");
+    <script type="text/javascript">
+        var myApp = angular.module("demo", []);
+
+        myApp.controller("demoCtrl", function ($scope, $http) {
+            var promise = $http.get("todo.json");
+            promise.success(function (data) {
+                $scope.todos = data;
+            });
+        });
+
     </script>
 </head>
-<body>
-    This is a simple example.
+
+<!--The controller uses the $scope object to provide data to a view that populates a table using data bindings and the ng-repeat directive.-->
+<body ng-controller="demoCtrl">
+    <div class="panel">
+        <h1>To Do</h1>
+        <table class="table">
+            <tr><td>Action</td><td>Done</td></tr>
+            <tr ng-repeat="item in todos">
+                <td>{{item.action}}</td>
+                <td>{{item.done}}</td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
