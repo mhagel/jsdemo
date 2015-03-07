@@ -10,12 +10,15 @@
         var myApp = angular.module("demo", []);
 
         myApp.controller("demoCtrl", function ($scope, $http) {
-            var promise = $http.get("todo.json");
-            promise.success(function (data) {
-                $scope.todos = data;
+            $http.get("todo.json").then(function (response) {
+                $scope.todos = response.data;
+            }, function () {
+                $scope.todos = [{action: "Error"}];
+            }).then(function () {
+                $scope.todos.push({action: "Request Complete"});
             });
         });
-
+            
     </script>
 </head>
 
@@ -27,7 +30,7 @@
             <tr><td>Action</td><td>Done</td></tr>
             <tr ng-repeat="item in todos">
                 <td>{{item.action}}</td>
-                <td>{{item.done}}</td>
+                <td>{{item.done}}</td> 
             </tr>
         </table>
     </div>
